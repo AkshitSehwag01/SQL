@@ -3,29 +3,37 @@ create database gfg_courses;
 
 use gfg_courses;
 
-CREATE table if not exists users (  
-										user_id VARCHAR(20), 
-                                        mail_id VARCHAR(50),
-                                        address VARCHAR(100),
-                                        country_code VARCHAR(3),
-                                        phone INT,
-                                        age INT
-								);
+CREATE TABLE `users` (
+  `user_id` varchar(20) NOT NULL,
+  `mail_id` varchar(50) NOT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `country_code` varchar(3) NOT NULL,
+  `phone` bigint NOT NULL,
+  `age` int DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `mail_id` (`mail_id`)
+);
                                 
-CREATE table if not exists courses (  
-									course_id    VARCHAR(5), 
-									mentor_name  VARCHAR(50),
-									ta_name      VARCHAR(50),
-									course_price FLOAT,
-									course_mode  VARCHAR(5),
-									location     VARCHAR(100)
-							);
+CREATE TABLE `courses` (
+  `course_id` varchar(5) NOT NULL,
+  `mentor_name` varchar(50) DEFAULT NULL,
+  `ta_name` varchar(50) DEFAULT NULL,
+  `course_price` float NOT NULL,
+  `course_mode` varchar(50) NOT NULL,
+  `location` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`course_id`)
+);
 							
                             
-CREATE table if not exists transection (  
-									transection_id    INT, 
-									course_id  VARCHAR(5),
-									user_id    VARCHAR(20),
-                                    marked_price FLOAT,
-                                    discounted_price FLOAT
-							);
+CREATE TABLE `transactions` (
+  `transaction_id` int NOT NULL AUTO_INCREMENT,
+  `course_id` varchar(5) NOT NULL,
+  `user_id` varchar(20) NOT NULL,
+  `marked_price` float NOT NULL,
+  `discounted_price` float NOT NULL,
+  PRIMARY KEY (`transaction_id`),
+  KEY `course_id` (`course_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`),
+  CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+);
